@@ -7,7 +7,7 @@ import {TodoItem} from './TodoItem/TodoItem.js';
 import { CreateTodoButton } from './CreateTodoButton/CreateTodoButton.js';
 const todos = [
   { text: "Estudiar X", completed: false },
-  { text: "Estudiar Y", completed: false },
+  { text: "Estudiar Y", completed: true },
   { text: "Estudiar Z", completed: false },
 ];
 function App() {
@@ -22,7 +22,7 @@ function App() {
       </div>
       <TodoList>
         {todos.map((todo, index) => (
-          <TodoItem key={`${todo.text}-${index}`}>
+          <TodoItem key={`${todo.text}-${index}`} completed={todo.completed}>
             {todo.text}
           </TodoItem>
         ))}

@@ -8,4 +8,5 @@ export const TodoList = styled.ul`
     gap: 0.5rem;
     list-style: none;
     padding-left: 0;
+    width: 100%;
 `;
