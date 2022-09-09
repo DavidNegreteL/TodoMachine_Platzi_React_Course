@@ -1,33 +1,54 @@
-import logo from './logo.svg';
-import {TodoCard} from './TodoCard/TodoCard.js';
-import {TodoCounter} from './TodoCounter/TodoCounter.js';
-import {TodoSearch} from './TodoSearch/TodoSearch.js';
-import {TodoList} from './TodoList/TodoList.js';
-import {TodoItem} from './TodoItem/TodoItem.js';
-import { CreateTodoButton } from './CreateTodoButton/CreateTodoButton.js';
-const todos = [
-  { text: "Estudiar X", completed: false },
+import { useState } from 'react';
+import { AppUI } from './AppUI';
+
+const todosHardcoded = [
+  { text: "Estudiar X", completed: true },
   { text: "Estudiar Y", completed: true },
   { text: "Estudiar Z", completed: false },
 ];
+
 function App() {
+  const [todos, setTodos] = useState(todosHardcoded);
+  const [searchValue, setSearchValue] = useState('');
+  const completedTodos = todos.filter(todo => todo.completed).length;
+  const totalTodos = todos.length;
+  let searchedTodos = [];
+
+  if(!searchValue.length >= 1) {
+    searchedTodos = todos;
+  } else {
+    searchedTodos = todos.filter(todo => {
+      const todoText = todo.text.toLowerCase();
+      const searchText = searchValue.toLowerCase();
+      return todoText.includes(searchText);
+    })
+  }
+
+  const completeTodo = (text) => {
+    const todoIndex = todos.findIndex(todo => todo.text === text);
+    const newTodos = [...todos];
+    newTodos[todoIndex].completed = true;
+    setTodos(newTodos);
+  };
+
+  const deleteTodo = (text) => {
+    const todoIndex = todos.findIndex(todo => todo.text === text);
+    const newTodos = [...todos];
+    newTodos.splice(todoIndex, 1);
+    setTodos(newTodos);
+  };
+
+
   return (
-    <TodoCard>
-      <TodoCounter/>
-      <div style={{display: 'flex', justifyContent: 'center', gap: '0.5rem'}}>
-        <TodoSearch/>
-        <CreateTodoButton>
-          +
-        </CreateTodoButton>
-      </div>
-      <TodoList>
-        {todos.map((todo, index) => (
-          <TodoItem key={`${todo.text}-${index}`} completed={todo.completed}>
-            {todo.text}
-          </TodoItem>
-        ))}
-      </TodoList>
-    </TodoCard>
+    <AppUI
+      totalTodos={totalTodos}
+      completedTodos={completedTodos}
+      searchValue={searchValue}
+      setSearchValue={setSearchValue}
+      searchedTodos={searchedTodos}
+      completeTodo={completeTodo}
+      deleteTodo={deleteTodo}
+    />
   );
 }
 

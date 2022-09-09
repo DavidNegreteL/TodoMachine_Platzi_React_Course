@@ -1,10 +1,10 @@
 import React from "react";
 import * as Styled from './todoCounter.styled';
 
-export const TodoCounter = () => {
+export const TodoCounter = ({total, completed}) => {
     return (
         <Styled.TodoCounter>
-            Has completado X de Y TODO's
+            Has completado {completed} de {total} TODO's
         </Styled.TodoCounter>
     );
 };
