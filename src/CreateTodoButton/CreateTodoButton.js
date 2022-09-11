@@ -3,7 +3,7 @@ import * as Styled from './createTodoButton.styled';
 
 export const CreateTodoButton = (props) => {
     const handleClickCreateButton = () => {
-        alert('Clickeaste el btn')
+        props.setOpenModal(true);
     };
 
     return (

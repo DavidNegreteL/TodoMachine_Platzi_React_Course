@@ -1,37 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
 import {TodoCard} from './TodoCard/TodoCard.js';
+import { TodoContext } from "./TodoContext/TodoContext.js";
 import {TodoCounter} from './TodoCounter/TodoCounter.js';
 import {TodoSearch} from './TodoSearch/TodoSearch.js';
 import {TodoList} from './TodoList/TodoList.js';
 import {TodoItem} from './TodoItem/TodoItem.js';
 import { CreateTodoButton } from './CreateTodoButton/CreateTodoButton.js';
+import { Modal } from "./Modal/Modal.js";
 
-export const AppUI = ({
-    totalTodos,
-    completedTodos,
-    searchValue,
-    setSearchValue,
-    searchedTodos,
-    completeTodo,
-    deleteTodo,
-}) => {
+export const AppUI = () => {
+    const {
+            error,
+            loading,
+            searchedTodos,
+            completeTodo,
+            deleteTodo,
+            openModal,
+            setOpenModal
+        } = useContext(TodoContext);
     return (
         <>
             <TodoCard>
-                <TodoCounter
-                    total={totalTodos}
-                    completed={completedTodos}
-                />
+                <TodoCounter/>
                 <div style={{display: 'flex', justifyContent: 'center', gap: '0.5rem'}}>
-                    <TodoSearch
-                    searchValue={searchValue}
-                    setSearchValue={setSearchValue}
-                    />
-                    <CreateTodoButton>
+                    <TodoSearch/>
+                    <CreateTodoButton
+                        setOpenModal={setOpenModal}
+                    >
                     +
                     </CreateTodoButton>
                 </div>
                 <TodoList>
+                    {error && <p>Hubo un error</p>}
+                    {loading && <p>Estamos cargando</p>}
+                    {(!loading && !searchedTodos.length) && <p>Crea tu primer TODO</p>}
+
                     {searchedTodos.map((todo, index) => (
                     <TodoItem 
                         key={`${todo.text}-${index}`} 
@@ -43,6 +46,13 @@ export const AppUI = ({
                     </TodoItem>
                     ))}
                 </TodoList>
+                {openModal && (
+                    <Modal setOpenModal={setOpenModal}>
+                        {
+                            <p>{searchedTodos[0].text}</p>
+                        }
+                    </Modal>
+                )}
             </TodoCard>
         </>
     );
