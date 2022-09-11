@@ -1,9 +1,7 @@
-import React, { useContext } from "react";
-import { TodoContext } from "../TodoContext/TodoContext";
+import React from "react";
 import * as Styled from './todoCounter.styled';
 
-export const TodoCounter = () => {
-    const {totalTodos, completedTodos} = useContext(TodoContext);
+export const TodoCounter = ({totalTodos, completedTodos}) => {
     return (
         <Styled.TodoCounter>
             Has completado {completedTodos} de {totalTodos} TODO's

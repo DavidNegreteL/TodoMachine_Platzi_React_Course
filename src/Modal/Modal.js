@@ -16,7 +16,7 @@ function Modal(props) {
                     <h2>Escribe el nuevo TODO</h2>
                 </Styled.ModalHeader>
                 <Styled.ModalBody>
-                    <TodoForm/>
+                    <TodoForm addTodo={props.addTodo} setOpenModal={props.setOpenModal}/>
                 </Styled.ModalBody>
                 <Styled.ModalFooter>
                     TODO MACHINE
