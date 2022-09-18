@@ -6,8 +6,9 @@ export const TodoList = (props) => {
         <Styled.TodoList>
             {props.error && props.onError()}
             {props.loading && props.onLoading()}
-            {(!props.loading && !props.searchedTodos.length && props.onEmpty())}
-            {props.searchedTodos.map(todo => props.render(todo))}
+            {(!props.loading && !props.totalTodos && props.onEmpty())}
+            {(props.totalTodos && !props.searchedTodos.length && props.onEmptySearchResults())}
+            {props.searchedTodos.map(props.children)}
             {props.children}
         </Styled.TodoList>
     );

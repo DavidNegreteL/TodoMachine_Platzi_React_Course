@@ -11,6 +11,8 @@ import { Modal } from "./Modal/Modal.js";
 import { TodoLoading } from './TodoItemsState/TodoLoading.js';
 import { TodoEmpty } from './TodoItemsState/TodoEmpty.js';
 import { TodosError } from './TodoItemsState/TodosError.js';
+import { EmptySearchResults } from './TodoSearch/EmptySearchResults.js';
+import { ChangeAlertWithStorageListener } from './ChangeAlert/ChangeAlert.js';
 
 function App() {
   const {
@@ -26,6 +28,7 @@ function App() {
             searchValue,
             setSearchValue,
             addTodo,
+            sincronizeTodos
         } = useTodos();
   return (
     <TodoCard>
@@ -33,11 +36,13 @@ function App() {
             <TodoCounter
                 totalTodos={totalTodos}
                 completedTodos={completedTodos}
+                loading={loading}
             />
             <div style={{display: 'flex', justifyContent: 'center', gap: '0.5rem'}}>
                 <TodoSearch
                     searchValue={searchValue}
                     setSearchValue={setSearchValue}
+                    loading={loading}
                 />
                 <CreateTodoButton
                     setOpenModal={setOpenModal}
@@ -48,22 +53,40 @@ function App() {
         </TodoHeader>
 
         <TodoList
-          error={error}
-          loading={loading}
-          searchedTodos={searchedTodos}
-          onError={() => <TodosError/>}
-          onLoading={() => <TodoLoading/>}
-          onEmpty={() => <TodoEmpty/>}
-          render={todo => (
-            <TodoItem 
-                key={`${todo.text}`} 
-                completed={todo.completed}
-                onComplete={() => completeTodo(todo.text)}
-                onDelete={() => deleteTodo(todo.text)}
-            >
-                {todo.text}
-            </TodoItem>
-          )}
+            error={error}
+            loading={loading}
+            searchedTodos={searchedTodos}
+            totalTodos={totalTodos}
+            onError={() => <TodosError/>}
+            onLoading={() => <TodoLoading/>}
+            onEmpty={() => <TodoEmpty/>}
+            onEmptySearchResults={() => <EmptySearchResults searchedText={searchValue}/>}
+            //</TodoCard>render={todo => (
+            //    <TodoItem 
+            //        key={`${todo.text}`} 
+            //        completed={todo.completed}
+            //        onComplete={() => completeTodo(todo.text)}
+            //        onDelete={() => deleteTodo(todo.text)}
+            //    >
+            //        {todo.text}
+            //    </TodoItem>
+            //)}
+        >
+            {
+                todo => (
+                <TodoItem 
+                    key={`${todo.text}`} 
+                    completed={todo.completed}
+                    onComplete={() => completeTodo(todo.text)}
+                    onDelete={() => deleteTodo(todo.text)}
+                >
+                    {todo.text}
+                </TodoItem>
+            )
+            }
+        </TodoList>
+        <ChangeAlertWithStorageListener
+            sincronize={sincronizeTodos}
         />
         {openModal && (
             <Modal setOpenModal={setOpenModal} addTodo={addTodo}/>
